@@ -1,11 +1,13 @@
 var webpack = require('webpack');
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
   entry: {
     knn: [
       'webpack-dev-server/client?http://localhost:8080',
       'webpack/hot/only-dev-server',
-      './src/demo/knn/index.js'
+      './src/demo/knn/index.js',
+      './src/demo/knn/main.css'
     ]
   },
   output: {
@@ -28,11 +30,12 @@ module.exports = {
 
   module: {
     loaders: [
-      { test: /\.css$/, loader: 'style!css' },
+      { test: /\.css$/, loader: ExtractTextPlugin.extract("style-loader", "css-loader") },
       { test: /\.js$/, exclude: /node_modules/, loader: 'babel' },
     ]
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin()
+    new webpack.HotModuleReplacementPlugin(),
+    new ExtractTextPlugin("[name].bundle.css")
   ]
 };
