@@ -15,11 +15,12 @@ module.exports = {
   },
 
   devServer: {
-    // contentBase: './src/demo',
     port: 8080,
     hot: true,
     inline: true,
   },
+
+  devtool: 'eval-source-map',
 
   resolve: {
     extensions: [ '', '.js', '.css' ]

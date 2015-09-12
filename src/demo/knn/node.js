@@ -1,12 +1,16 @@
+import './main.css';
+
 const Node = function(object) {
   for (let key in object) {
     this[key] = object[key];
   }
 };
 
-Node.prototype.measureDistances = (areaRangeObj, roomsRangeObj) => {
+Node.prototype.measureDistances = function(areaRangeObj, roomsRangeObj) {
   const roomsRange = roomsRangeObj.max - roomsRangeObj.min;
-  const areaRange  = areaRangeObj.max;
+  const areaRange  = areaRangeObj.max - areaRangeObj.min;
+  console.log(areaRange)
+  console.log(areaRange)
 
   for (let i in this.neighbors) {
     const neighbor = this.neighbors[i];
@@ -17,7 +21,7 @@ Node.prototype.measureDistances = (areaRangeObj, roomsRangeObj) => {
   }
 };
 
-Node.prototype.sortByDistance = () => {
+Node.prototype.sortByDistance = function() {
   this.neighbors.sort((a, b) => {
     return a.distance - b.distance;
   });

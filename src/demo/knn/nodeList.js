@@ -1,11 +1,17 @@
-const NodeList = (k) => {
+import Node from './node';
+
+const NodeList = function(k) {
   this.nodes = [];
   this.k     = k;
 };
 
-NodeList.prototype.calculateRanges = () => {
+NodeList.prototype.add = function(node) {
+  this.nodes.push(node);
+};
+
+NodeList.prototype.calculateRanges = function() {
   this.areas  = {min: 1000000, max: 0};
-  this.roooms = {min: 1000000, max: 0};
+  this.rooms = {min: 1000000, max: 0};
   for (let i in this.nodes) {
     if (this.nodes[i].rooms < this.rooms.min) {
       this.rooms.min = this.nodes[i].rooms;
@@ -15,7 +21,7 @@ NodeList.prototype.calculateRanges = () => {
       this.rooms.max = this.nodes[i].rooms;
     }
 
-    if  (this.nodes[i].area > this.areas.min) {
+    if  (this.nodes[i].area < this.areas.min) {
       this.areas.min = this.nodes[i].area;
     }
 
@@ -25,7 +31,7 @@ NodeList.prototype.calculateRanges = () => {
   }
 };
 
-NodeList.prototype.determineUnknown = () => {
+NodeList.prototype.determineUnknown = function() {
   this.calculateRanges();
 
   for (let i in this.nodes) {
@@ -45,7 +51,7 @@ NodeList.prototype.determineUnknown = () => {
   }
 };
 
-NodeList.prototype.draw = (canvasId) => {
+NodeList.prototype.draw = function(canvasId) {
   const roomsRange = this.rooms.max - this.rooms.min;
   const areasRange = this.areas.max - this.areas.min;
 
