@@ -33,6 +33,7 @@ NodeList.prototype.calculateRanges = function() {
 
 NodeList.prototype.determineUnknown = function() {
   this.calculateRanges();
+  let unknownNodes = [];
 
   for (let i in this.nodes) {
     if (!this.nodes[i].type) {
@@ -41,15 +42,29 @@ NodeList.prototype.determineUnknown = function() {
         if (!this.nodes[j].type) {
           continue;
         }
+        unknownNodes.push(this.nodes[i]);
         this.nodes[i].neighbors.push( new Node(this.nodes[j]));
       }
 
       this.nodes[i].measureDistances(this.areas, this.rooms);
       this.nodes[i].sortByDistance();
-      console.log(this.nodes[i].guessType(this.k)); //eslint-disable-line
+      this.nodes[i].guessType(this.k);
     }
   }
+  // return unknownNodes;
 };
+
+NodeList.prototype.changeUnkownToDetermined = function() {
+  let k = this.k;
+  _.chain(this.nodes)
+    .filter(node => {
+      return !node.type;
+    })
+    .forEach(node => {
+      node.type = node.guessType(k);
+    })
+    .value();
+}
 
 NodeList.prototype.draw = function(canvasId) {
   const roomsRange = this.rooms.max - this.rooms.min;
@@ -108,7 +123,7 @@ NodeList.prototype.draw = function(canvasId) {
           ctx.strokeStyle = '#666666';
       }
 
-      let radius = this.nodes[i].neighbors[this.k - 1].distatance * WIDTH;
+      let radius = this.nodes[i].neighbors[this.k - 1].distance * WIDTH;
       radius *= xShiftPct;
       ctx.beginPath();
       ctx.arc(0, 0, radius, 0, Math.PI*2, true);

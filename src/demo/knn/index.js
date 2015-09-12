@@ -39,14 +39,30 @@ function bootstrap() {
     height: 400,
   })
   document.body.appendChild(canvas);
+  canvas.addEventListener('click', mainCanvasClickHandler.bind(canvas), false);
+  const nodes = dataToNodeList(traningData);
+  setInterval(function() {
+    render({nodes});
+    nodes.changeUnkownToDetermined();
+  }, 1000)
+
 }
 
-function run() {
+function dataToNodeList(data) {
   nodes = new NodeList(3);
-  for (var i in traningData)
+  for (let i in traningData)
   {
       nodes.add( new Node(traningData[i]) );
   }
+  return nodes;
+}
+
+function mainCanvasClickHandler(e) {
+  let x = event.pageX - this.offsetLeft,
+      y = event.pageY - this.offsetTop;
+}
+
+function render({nodes}) {
   var random_rooms = Math.round( Math.random() * 10 );
   var random_area = Math.round( Math.random() * 2000 );
   nodes.add( new Node({rooms: random_rooms, area: random_area, type: false}) );
@@ -56,4 +72,3 @@ function run() {
 }
 
 bootstrap();
-setInterval(run, 500);

@@ -9,8 +9,6 @@ const Node = function(object) {
 Node.prototype.measureDistances = function(areaRangeObj, roomsRangeObj) {
   const roomsRange = roomsRangeObj.max - roomsRangeObj.min;
   const areaRange  = areaRangeObj.max - areaRangeObj.min;
-  console.log(areaRange)
-  console.log(areaRange)
 
   for (let i in this.neighbors) {
     const neighbor = this.neighbors[i];
@@ -47,7 +45,7 @@ Node.prototype.guessType = function(k) {
   }
 
   this.guess = guess;
-  return types;
+  return this.guess.type;
 };
 
 export default Node;
